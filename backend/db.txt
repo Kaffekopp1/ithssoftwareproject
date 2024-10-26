@@ -1,0 +1,127 @@
+
+
+POLL START
+Test insert med Array alternativ syntax:
+INSERT INTO poll (
+name, question, alternative) VALUES ('Testpoll','testquestion','{ Alternativ1 , Alternativ2 , Alternativ3}');
+
+Insert syntax2 med array UPDATED:
+INSERT INTO poll (
+pollName, creatorName, question, alternative, alternativeStatistics)
+VALUES ('Testpoll2','testCreatorName','testquestion2',ARRAY[ 'Alternativ1' ,
+'Alternativ2' ,'Alternativ3'], ARRAY[0,0,0]);
+
+
+startkommando:
+psql --username=postgres
+
+
+-------------------------- Create Tables ------------------------------------------------
+
+CREATE TABLE poll (
+id serial PRIMARY KEY,
+creator_name text NOT NULL,
+question text NOT NULL
+);
+
+CREATE TABLE alternative (
+  id serial PRIMARY KEY,
+  poll_id integer REFERENCES poll (id),
+  votes integer,
+  alternative text
+);
+
+-- incase i want to add functionality with login--
+CREATE TABLE votes (
+id serial PRIMARY KEY,
+alternative_id integer REFERENCES alternative (id)
+);
+
+------------------------------------- Test Inserts -------------------------------------
+
+INSERT INTO poll ( creator_name, question) VALUES ('Test Poll', 'test creator name');
+
+INSERT INTO alternative (poll_id, alternative) VALUES (1, 'Test alternativ'), (1, 'Test Alternativ2'), (1, 'Test Alternativ3');
+
+
+#INSERT INTO votes (alternative_id) VALUES (1);
+
+
+-------------------- Test update ---------------
+update alternative set votes = votes + 1 where id = 1;
+--------------------------------------Some selects-----------------------------------
+SELECT * FROM poll;
+
+SELECT * FROM alternative;
+
+SELECT * FROM poll WHERE id = 1 ;
+
+select * from votes where alternative_id = 1;
+
+--------- experiment med vote
+# votes alternatives.
+select alternative.alternative, alternative.id as a_id, votes.id as v_id from alternative join votes on alternative.id = votes.alternative_id ;
+order by:
+select alternative.alternative, alternative.id as a_id, votes.id as v_id from alternative join votes on alternative.id = votes.alternative_id order by a_id;
+Count:
+select alternative.alternative, alternative.id as a_id, votes.id as v_id from alternative join votes on alternative.id = votes.alternative_id where a_id = 2;
+räkna antal av specifikt alternativ
+select alternative.alternative, alternative.id as a_id, votes.id as v_id from alternative join votes on alternative.id = votes.alternative_id where alternative.id =1;
+
+ta med pollfrågan:
+select poll.question, alternative.alternative, alternative.id as a_id,
+votes.id as v_id from alternative join votes
+on alternative.id = votes.alternative_id
+join poll on poll.id = alternative.poll_id order by poll.id ;
+
+få med endast från en specifik fråga
+select poll.question, alternative.alternative, alternative.id as a_id,
+votes.id as v_id from alternative join votes
+on alternative.id = votes.alternative_id
+join poll on poll.id = alternative.poll_id where poll.id = 1 ;
+
+
+
+------------------------------------------- CREATE FUNCTION----------------------------------
+
+CREATE OR REPLACE FUNCTION create_poll(
+  p_creator_name text,
+  p_question text,
+  p_alternatives text[]
+)
+RETURNS TABLE(poll_id integer, alternative_id integer) AS $$
+DECLARE
+  v_poll_id integer;
+  v_alternative_id integer;
+  alternative text;
+BEGIN
+ INSERT INTO poll ( creator_name, question) VALUES ( p_creator_name,  p_question )
+ RETURNING id INTO v_poll_id;
+
+FOREACH alternative IN ARRAY p_alternatives LOOP
+INSERT INTO alternative (poll_id, alternative, votes ) VALUES ( v_poll_id, alternative, 0 )
+RETURNING id INTO v_alternative_id;
+     poll_id := v_poll_id;
+     alternative_id := v_alternative_id;
+RETURN NEXT;
+END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+--------------------------------------------------- GET AS AN OBJECT ---------------------------
+
+SELECT * FROM alternative JOIN poll ON poll.id = alternative.poll_id where poll_id = 5;
+
+SELECT poll.*,
+       jsonb_agg(jsonb_build_object('id', alternative.id, 'alternative', alternative.alternative) order by alternative.id) AS alternatives
+FROM poll
+JOIN alternative ON poll.id = alternative.poll_id
+WHERE poll.id = 1
+GROUP BY poll.id;
+
+
+------------------------------------------------------------ drop table ------------------------
+DROP TABLE votes;
+DROP TABLE alternative;
+DROP TABLE poll;
+DROP FUNCTION create_poll;
