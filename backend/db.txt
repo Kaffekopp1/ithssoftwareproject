@@ -1,20 +1,12 @@
 
 
-POLL START
-Test insert med Array alternativ syntax:
-INSERT INTO poll (
-name, question, alternative) VALUES ('Testpoll','testquestion','{ Alternativ1 , Alternativ2 , Alternativ3}');
+terminal kommando för att bygga och kopiera:
+npm run --prefix ../frontend build
+rm -Rf dist
+cp -R ../frontend/dist .
 
-Insert syntax2 med array UPDATED:
-INSERT INTO poll (
-pollName, creatorName, question, alternative, alternativeStatistics)
-VALUES ('Testpoll2','testCreatorName','testquestion2',ARRAY[ 'Alternativ1' ,
-'Alternativ2' ,'Alternativ3'], ARRAY[0,0,0]);
-
-
-startkommando:
+Öppna postgres i terminal:
 psql --username=postgres
-
 
 -------------------------- Create Tables ------------------------------------------------
 
@@ -134,7 +126,6 @@ GROUP BY poll.id;
 DELETE FROM poll WHERE id = 1;
 
 ------------------------------------------------------------ drop table ------------------------
-DROP TABLE votes;
 DROP TABLE votes;
 DROP TABLE discussion;
 DROP TABLE alternative;
