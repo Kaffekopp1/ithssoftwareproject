@@ -30,7 +30,7 @@ export default function Polls() {
 			) : (
 				pollData &&
 				pollData?.map((value) => (
-					<div key={value.id}>
+					<div className="poll" key={value.id}>
 						<Link to={`/poll/${value?.id}`}>{value?.question}</Link>
 					</div>
 				))

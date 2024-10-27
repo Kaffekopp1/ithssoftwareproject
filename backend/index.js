@@ -32,7 +32,7 @@ app.post("/api/poll", async (_request, response) => {
 		);
 		response.send(rows);
 	} catch (err) {
-		return { err };
+		retesponse.send(err);
 	}
 });
 
@@ -68,6 +68,47 @@ app.get("/api/get/poll/:id", async (_request, response) => {
 	}
 });
 
+app.post("/api/discussion", async (_request, response) => {
+	console.log("framme", _request.body);
+	const { id, message, sender } = _request.body;
+	console.log("id", id, message, sender);
+	try {
+		const { rows } = await client.query(
+			"INSERT INTO discussion (poll_id, message, sender) VALUES ($1, $2, $3)",
+			[id, message, sender]
+		);
+		response.send({ meddelande: "meddelande skickat" });
+	} catch (err) {
+		response.send(err);
+	}
+});
+app.delete("/api/discussion", async (_request, response) => {
+	const { id } = _request.body;
+	try {
+		const { rows } = await client.query(
+			"DELETE FROM discussion WHERE id = $1",
+			[id]
+		);
+		response.send({ deleted: "message is deleted" });
+	} catch (error) {
+		response.send(error);
+	}
+});
+
+app.get("/api/discussion/:id", async (_request, response) => {
+	const { id } = _request.params;
+	console.log("id", id);
+	try {
+		const { rows } = await client.query(
+			"SELECT * FROM discussion where poll_id = $1",
+			[id]
+		);
+		console.log("row");
+		response.send(rows);
+	} catch (error) {
+		response.send({ error: error });
+	}
+});
 app.use(express.static(path.join(path.resolve(), "dist")));
 
 app.listen(port, () => {

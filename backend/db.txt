@@ -31,6 +31,14 @@ CREATE TABLE alternative (
   alternative text
 );
 
+
+CREATE TABLE discussion (
+  id serial PRIMARY KEY,
+  poll_id integer REFERENCES poll (id) on delete cascade,
+  message text,
+  sender text
+);
+
 -- incase i want to add functionality with login--
 CREATE TABLE votes (
 id serial PRIMARY KEY,
@@ -43,6 +51,7 @@ INSERT INTO poll ( creator_name, question) VALUES ('Test Poll', 'test creator na
 
 INSERT INTO alternative (poll_id, alternative) VALUES (1, 'Test alternativ'), (1, 'Test Alternativ2'), (1, 'Test Alternativ3');
 
+INSERT INTO discussion (poll_id, message) VALUES (1, 'some diskussiontext') ;
 
 #INSERT INTO votes (alternative_id) VALUES (1);
 
@@ -53,6 +62,8 @@ update alternative set votes = votes + 1 where id = 1;
 SELECT * FROM poll;
 
 SELECT * FROM alternative;
+
+SELECT * FROM discussion;
 
 SELECT * FROM poll WHERE id = 1 ;
 
@@ -124,6 +135,7 @@ DELETE FROM poll WHERE id = 1;
 
 ------------------------------------------------------------ drop table ------------------------
 DROP TABLE votes;
+DROP TABLE votes;
+DROP TABLE discussion;
 DROP TABLE alternative;
 DROP TABLE poll;
-DROP FUNCTION create_poll;

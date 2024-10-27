@@ -21,6 +21,7 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	flex-wrap: wrap;
 }
 .container {
 	min-height: 100vh;
@@ -29,7 +30,12 @@
 	/* border: dotted white; */
 	box-shadow: inset 1px 1px 2px #000000, inset -1px -1px 2px #615d87;
 	padding: 10px;
+	max-width: 80vw;
 	border-radius: 10px;
+}
+
+.poll-alternative button {
+	word-break: break-word;
 }
 .home {
 	display: flex;
@@ -47,7 +53,14 @@
 	padding: 10px;
 	border-radius: 10px;
 }
-
+.poll {
+	margin-top: 30px;
+}
+.message {
+	border: dotted white;
+	border-radius: 10px;
+	margin-bottom: 10px;
+}
 @media (min-width: 400px) {
 	.navbar {
 		flex-direction: row;

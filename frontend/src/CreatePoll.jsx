@@ -6,6 +6,7 @@ export default function CreatePoll() {
 	const [alternative, setAlternative] = useState("");
 	const [alternatives, setAlternatives] = useState([]);
 	const [loading, setLoading] = useState(false);
+
 	async function pollCreater() {
 		if (question == "" || name == "" || alternatives < 1) {
 			alert("fyll i alla alternativ");

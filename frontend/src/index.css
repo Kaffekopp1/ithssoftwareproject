@@ -69,3 +69,15 @@ input {
 	color: rgba(255, 255, 255, 0.942);
 	box-shadow: inset 1px 1px 2px #000000, inset -1px -1px 2px #615d87;
 }
+
+textarea {
+	width: 90%;
+	border: none;
+	min-height: 50px;
+	border-radius: 4px;
+	padding: 5px;
+	font-weight: bold;
+	background-color: #323046;
+	color: rgba(255, 255, 255, 0.942);
+	box-shadow: inset 1px 1px 2px #000000, inset -1px -1px 2px #615d87;
+}
