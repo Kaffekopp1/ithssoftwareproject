@@ -26,7 +26,7 @@ question text NOT NULL
 
 CREATE TABLE alternative (
   id serial PRIMARY KEY,
-  poll_id integer REFERENCES poll (id),
+  poll_id integer REFERENCES poll (id) on delete cascade,
   votes integer,
   alternative text
 );
@@ -119,6 +119,8 @@ JOIN alternative ON poll.id = alternative.poll_id
 WHERE poll.id = 1
 GROUP BY poll.id;
 
+----------------------------------------------------DELETE---------------------------------
+DELETE FROM poll WHERE id = 1;
 
 ------------------------------------------------------------ drop table ------------------------
 DROP TABLE votes;

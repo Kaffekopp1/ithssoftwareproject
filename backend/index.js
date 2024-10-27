@@ -23,6 +23,29 @@ app.get("/api/poll", async (_request, response) => {
 	}
 });
 
+app.post("/api/poll", async (_request, response) => {
+	const { creatorName, question, alternatives } = _request.body;
+	try {
+		const { rows } = await client.query(
+			"SELECT * FROM create_poll($1, $2, $3)",
+			[creatorName, question, alternatives]
+		);
+		response.send(rows);
+	} catch (err) {
+		return { err };
+	}
+});
+
+app.delete("/api/poll", async (_request, response) => {
+	const { id } = _request.body;
+	try {
+		const { rows } = await client.query("DELETE FROM poll WHERE id = $1", [id]);
+		response.send({ deleted: "poll is deleted" });
+	} catch (error) {
+		response.send(error);
+	}
+});
+
 app.patch("/api/vote", async (_request, response) => {
 	const { id } = _request.body;
 	const { rows } = await client.query(
@@ -42,20 +65,6 @@ app.get("/api/get/poll/:id", async (_request, response) => {
 		response.send(rows);
 	} catch (error) {
 		response.send(error);
-	}
-});
-
-app.post("/api/poll", async (_request, response) => {
-	console.log("here", _request.body);
-	const { creatorName, question, alternatives } = _request.body;
-	try {
-		const { rows } = await client.query(
-			"SELECT * FROM create_poll($1, $2, $3)",
-			[creatorName, question, alternatives]
-		);
-		response.send(rows);
-	} catch (err) {
-		return { err };
 	}
 });
 

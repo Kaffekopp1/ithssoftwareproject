@@ -1,26 +1,35 @@
 #root {
 	max-width: 1280px;
 	margin: 0 auto;
-	padding: 2rem;
+	padding: 1.5rem;
 	text-align: center;
 }
 .navbar {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	margin: 0px;
 	padding: 0px;
 	list-style: none;
 }
+.navbar li {
+	margin-bottom: 20px;
+	margin-left: 10px;
+}
 .poll-alternative {
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
-}
-.navbar li {
-	margin-left: 10px;
 }
 .container {
 	min-height: 100vh;
+}
+.poll-container {
+	/* border: dotted white; */
+	box-shadow: inset 1px 1px 2px #000000, inset -1px -1px 2px #615d87;
+	padding: 10px;
+	border-radius: 10px;
 }
 .home {
 	display: flex;
@@ -34,32 +43,21 @@
 	flex-direction: column;
 	justify-content: center;
 	min-height: 50vh;
-	border: dotted white;
+	box-shadow: inset 1px 1px 2px #000000, inset -1px -1px 2px #615d87;
 	padding: 10px;
 	border-radius: 10px;
 }
-.form input {
-	margin-bottom: 20px;
-}
-@keyframes logo-spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
-}
 
-@media (prefers-reduced-motion: no-preference) {
-	a:nth-of-type(2) .logo {
-		animation: logo-spin infinite 20s linear;
+@media (min-width: 400px) {
+	.navbar {
+		flex-direction: row;
 	}
-}
-
-.card {
-	padding: 2em;
-}
-
-.read-the-docs {
-	color: #888;
+	.navbar li {
+		margin-bottom: 0px;
+		margin-left: 10px;
+	}
+	.poll-alternative {
+		flex-direction: row;
+		justify-content: center;
+	}
 }

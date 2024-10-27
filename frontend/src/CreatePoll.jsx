@@ -13,7 +13,7 @@ export default function CreatePoll() {
 		}
 		try {
 			setLoading(true);
-			const response = await fetch("api/poll", {
+			await fetch("api/poll", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -24,9 +24,10 @@ export default function CreatePoll() {
 					alternatives: alternatives
 				})
 			});
-			const data = await response.json();
-			console.log("data", data);
 			alert("din poll är skapad se den i fliken polls");
+			setAlternatives([]);
+			setQuestion("");
+			setName("");
 		} catch (error) {
 			alert("Server strul:");
 			console.error("Error vid api:", error);
@@ -66,7 +67,7 @@ export default function CreatePoll() {
 										setAlternative("")
 									)
 								}>
-								add alternative
+								Lägg till
 							</button>
 						</div>
 						<button onClick={pollCreater}>Skapa poll</button>

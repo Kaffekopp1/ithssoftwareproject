@@ -1,21 +1,35 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 export default function Poll() {
 	const { pollId } = useParams();
 	const [pollInfo, setPollInfo] = useState();
 	const [loading, setLoading] = useState(false);
 	const [refreshKey, setRefreshKey] = useState(0);
-	async function test() {
+
+	const navigate = useNavigate();
+
+	async function deletePoll() {
 		try {
-			const response = await fetch(`/api/get/poll/${pollId}`);
+			const response = await fetch(`/api/poll`, {
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					id: pollId
+				})
+			});
 			const data = await response.json();
-			console.log("data", data);
-			setPollInfo(data[0]);
+			alert(`poll raderad: ${data.deleted}`);
+			navigate("/");
 		} catch (error) {
-			console.log("error", error);
+			alert("Något gick fel", error);
+		} finally {
+			setLoading(false);
 		}
 	}
-
 	async function voter(alternativeId) {
 		console.log(alternativeId, "test");
 		setLoading(true);
@@ -58,26 +72,33 @@ export default function Poll() {
 	return (
 		<div>
 			<h2>{pollInfo?.question}</h2>
-			<button onClick={test}>test</button>
 			{loading ? (
 				<p>Laddar... </p>
 			) : (
-				<>
-					<p>{pollInfo?.question}</p>
-					<div className="poll-alternative">
-						{pollInfo?.alternatives &&
-							pollInfo.alternatives.map((value) => (
-								<div key={value.id}>
-									<button onClick={() => voter(value.id)}>
-										{value.alternative}
-									</button>
-									<p>{value.votes}</p>
-								</div>
-							))}
-					</div>
-					<h2>Fråga skapad av:</h2>
-					<p>{pollInfo?.creator_name}</p>
-				</>
+				<div className="poll-container">
+					<>
+						<h3>{pollInfo?.question}</h3>
+						<div className="poll-alternative">
+							{pollInfo?.alternatives &&
+								pollInfo.alternatives.map((value) => (
+									<div key={value.id}>
+										<button onClick={() => voter(value.id)}>
+											{value.alternative}
+										</button>
+										<p>{value.votes}</p>
+									</div>
+								))}
+						</div>
+					</>
+
+					{pollInfo?.alternatives && (
+						<>
+							<h4>Fråga skapad av:</h4>
+							<p>{pollInfo?.creator_name}</p>
+							<button onClick={deletePoll}>Ta bort Poll</button>
+						</>
+					)}
+				</div>
 			)}
 		</div>
 	);
