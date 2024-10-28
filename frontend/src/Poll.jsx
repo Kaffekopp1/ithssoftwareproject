@@ -119,7 +119,7 @@ export default function Poll() {
 			console.log("pollId", pollId);
 			const response = await fetch(`/api/discussion/${pollId}`);
 			const data = await response.json();
-			console.log("data", data);
+
 			setDiscussion(data);
 		} catch (error) {
 			console.log("error", error);
