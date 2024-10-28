@@ -14,7 +14,7 @@ export default function CreatePoll() {
 		}
 		try {
 			setLoading(true);
-			await fetch("api/poll", {
+			let response = await fetch("api/poll", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -25,10 +25,14 @@ export default function CreatePoll() {
 					alternatives: alternatives
 				})
 			});
-			alert("din poll är skapad se den i fliken polls");
-			setAlternatives([]);
-			setQuestion("");
-			setName("");
+			if (response.ok) {
+				alert("din poll är skapad se den i fliken polls");
+				setAlternatives([]);
+				setQuestion("");
+				setName("");
+			} else {
+				alert(`något gick på tok med servern`);
+			}
 		} catch (error) {
 			alert("Server strul:");
 			console.error("Error vid api:", error);

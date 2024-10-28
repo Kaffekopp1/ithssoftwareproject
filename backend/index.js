@@ -19,7 +19,7 @@ app.get("/api/poll", async (_request, response) => {
 		const { rows } = await client.query("SELECT * FROM poll");
 		response.send(rows);
 	} catch (error) {
-		response.send(error);
+		response.status(500).send(error);
 	}
 });
 
@@ -30,9 +30,9 @@ app.post("/api/poll", async (_request, response) => {
 			"SELECT * FROM create_poll($1, $2, $3)",
 			[creatorName, question, alternatives]
 		);
-		response.send(rows);
-	} catch (err) {
-		response.send(err);
+		response.status(201).send({ poll: "pollskapad" });
+	} catch (error) {
+		response.status(500).send(error);
 	}
 });
 
@@ -42,7 +42,7 @@ app.delete("/api/poll", async (_request, response) => {
 		const { rows } = await client.query("DELETE FROM poll WHERE id = $1", [id]);
 		response.send({ deleted: "poll is deleted" });
 	} catch (error) {
-		response.send(error);
+		response.status(500).send(error);
 	}
 });
 
@@ -55,7 +55,7 @@ app.patch("/api/vote", async (_request, response) => {
 		);
 		response.send(rows);
 	} catch (error) {
-		response.send(error);
+		response.status(500).send(error);
 	}
 });
 
@@ -68,33 +68,29 @@ app.get("/api/get/poll/:id", async (_request, response) => {
 		);
 		response.send(rows);
 	} catch (error) {
-		response.send(error);
+		response.status(500).send(error);
 	}
 });
 
 app.post("/api/discussion", async (_request, response) => {
 	const { id, message, sender } = _request.body;
-
 	try {
-		const { rows } = await client.query(
+		await client.query(
 			"INSERT INTO discussion (poll_id, message, sender) VALUES ($1, $2, $3)",
 			[id, message, sender]
 		);
-		response.send({ meddelande: "meddelande skickat" });
-	} catch (err) {
-		response.send(err);
+		response.status(201).send({ meddelande: "meddelande skickat" });
+	} catch (error) {
+		response.status(500).send(error);
 	}
 });
 app.delete("/api/discussion", async (_request, response) => {
 	const { id } = _request.body;
 	try {
-		const { rows } = await client.query(
-			"DELETE FROM discussion WHERE id = $1",
-			[id]
-		);
+		await client.query("DELETE FROM discussion WHERE id = $1", [id]);
 		response.send({ deleted: "message is deleted" });
 	} catch (error) {
-		response.send(error);
+		response.status(500).send(error);
 	}
 });
 
@@ -109,7 +105,7 @@ app.get("/api/discussion/:id", async (_request, response) => {
 
 		response.send(rows);
 	} catch (error) {
-		response.send({ error: error });
+		response.status(500).send(error);
 	}
 });
 app.use(express.static(path.join(path.resolve(), "dist")));

@@ -9,8 +9,12 @@ export default function Polls() {
 				setLoading(true);
 				const response = await fetch("/api/poll");
 				const data = await response.json();
-				if (data[0]) {
-					setPollData(data);
+				if (response.ok) {
+					if (data[0]) {
+						setPollData(data);
+					}
+				} else {
+					alert("Något gick fel");
 				}
 			} catch (error) {
 				alert("error fel på servern", error);

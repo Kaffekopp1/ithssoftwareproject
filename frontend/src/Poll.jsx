@@ -26,9 +26,13 @@ export default function Poll() {
 					id: pollId
 				})
 			});
-			const data = await response.json();
-			alert(`poll raderad: ${data.deleted}`);
-			navigate("/");
+			if (response.ok) {
+				const data = await response.json();
+				alert(`poll raderad: ${data.deleted}`);
+				navigate("/");
+			} else {
+				alert("något gick fel");
+			}
 		} catch (error) {
 			alert("Något gick fel", error);
 		} finally {
@@ -46,9 +50,13 @@ export default function Poll() {
 					id: id
 				})
 			});
-			const data = await response.json();
-			alert(`medelande raderad: ${data.deleted}`);
-			getDiskussion();
+			if (response.ok) {
+				const data = await response.json();
+				alert(`medelande raderad: ${data.deleted}`);
+				getDiskussion();
+			} else {
+				alert("något gick fel");
+			}
 		} catch (error) {
 			alert("Något gick fel", error);
 		} finally {
@@ -57,7 +65,7 @@ export default function Poll() {
 	}
 	async function sendMessage() {
 		try {
-			await fetch(`/api/discussion`, {
+			const response = await fetch(`/api/discussion`, {
 				method: "Post",
 				headers: {
 					"Content-Type": "application/json"
@@ -68,9 +76,13 @@ export default function Poll() {
 					sender: name
 				})
 			});
-			setName("");
-			setMessage("");
-			getDiskussion();
+			if (response.ok) {
+				setName("");
+				setMessage("");
+				getDiskussion();
+			} else {
+				alert("något gick fel");
+			}
 		} catch (error) {
 			alert("Något gick fel", error);
 		} finally {
@@ -80,7 +92,7 @@ export default function Poll() {
 	async function voter(alternativeId) {
 		setLoading(true);
 		try {
-			await fetch("/api/vote", {
+			const response = await fetch("/api/vote", {
 				method: "PATCH",
 				headers: {
 					"Content-Type": "application/json"
@@ -89,7 +101,11 @@ export default function Poll() {
 					id: alternativeId
 				})
 			});
-			setRefreshKey(refreshKey + 1);
+			if (response.ok) {
+				setRefreshKey(refreshKey + 1);
+			} else {
+				alert("något gick fel");
+			}
 		} catch (error) {
 			alert(error);
 		} finally {
@@ -102,8 +118,11 @@ export default function Poll() {
 				setLoading(true);
 				const response = await fetch(`/api/get/poll/${pollId}`);
 				const data = await response.json();
-
-				setPollInfo(data[0]);
+				if (response.ok) {
+					setPollInfo(data[0]);
+				} else {
+					alert("något gick fel");
+				}
 			} catch (error) {
 				console.log("error", error);
 			} finally {
@@ -118,7 +137,11 @@ export default function Poll() {
 			setDiscussionLoad(true);
 			const response = await fetch(`/api/discussion/${pollId}`);
 			const data = await response.json();
-			setDiscussion(data);
+			if (response.ok) {
+				setDiscussion(data);
+			} else {
+				alert("Något blev fel");
+			}
 		} catch (error) {
 			console.log("error", error);
 		} finally {
