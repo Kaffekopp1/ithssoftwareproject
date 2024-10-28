@@ -78,10 +78,9 @@ export default function Poll() {
 		}
 	}
 	async function voter(alternativeId) {
-		console.log(alternativeId, "test");
 		setLoading(true);
 		try {
-			const response = await fetch("/api/vote", {
+			await fetch("/api/vote", {
 				method: "PATCH",
 				headers: {
 					"Content-Type": "application/json"
@@ -90,9 +89,7 @@ export default function Poll() {
 					id: alternativeId
 				})
 			});
-			const data = await response.json();
 			setRefreshKey(refreshKey + 1);
-			console.log("data", data);
 		} catch (error) {
 			alert(error);
 		} finally {
@@ -105,7 +102,7 @@ export default function Poll() {
 				setLoading(true);
 				const response = await fetch(`/api/get/poll/${pollId}`);
 				const data = await response.json();
-				console.log("data", data);
+
 				setPollInfo(data[0]);
 			} catch (error) {
 				console.log("error", error);

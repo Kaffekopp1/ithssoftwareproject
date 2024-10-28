@@ -60,6 +60,7 @@
 	border: dotted white;
 	border-radius: 10px;
 	margin-bottom: 10px;
+	padding: 10px;
 }
 @media (min-width: 400px) {
 	.navbar {

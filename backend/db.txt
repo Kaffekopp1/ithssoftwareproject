@@ -107,6 +107,7 @@ RETURNING id INTO v_alternative_id;
      poll_id := v_poll_id;
      alternative_id := v_alternative_id;
 RETURN NEXT;
+
 END LOOP;
 END;
 $$ LANGUAGE plpgsql;

@@ -9,7 +9,6 @@ export default function Polls() {
 				setLoading(true);
 				const response = await fetch("/api/poll");
 				const data = await response.json();
-				console.log(data);
 				if (data[0]) {
 					setPollData(data);
 				}
