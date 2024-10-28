@@ -8,7 +8,7 @@ cp -R ../frontend/dist .
 Öppna postgres i terminal:
 psql --username=postgres
 
--------------------------- Create Tables ------------------------------------------------
+---------------- Create Tables ------------------------------------------------
 
 CREATE TABLE poll (
 id serial PRIMARY KEY,
@@ -37,7 +37,7 @@ id serial PRIMARY KEY,
 alternative_id integer REFERENCES alternative (id)
 );
 
-------------------------------------- Test Inserts -------------------------------------
+----------------------------- Test Inserts -------------------------------------
 
 INSERT INTO poll ( creator_name, question) VALUES ('Test Poll', 'test creator name');
 
@@ -50,7 +50,7 @@ INSERT INTO discussion (poll_id, message) VALUES (1, 'some diskussiontext') ;
 
 -------------------- Test update ---------------
 update alternative set votes = votes + 1 where id = 1;
---------------------------------------Some selects-----------------------------------
+--------------------------Some selects-----------------------------------
 SELECT * FROM poll;
 
 SELECT * FROM alternative;
@@ -112,7 +112,7 @@ END LOOP;
 END;
 $$ LANGUAGE plpgsql;
 
---------------------------------------------------- GET AS AN OBJECT ---------------------------
+---------------------------------- GET AS AN OBJECT ---------------------------
 
 SELECT * FROM alternative JOIN poll ON poll.id = alternative.poll_id where poll_id = 5;
 
@@ -126,7 +126,7 @@ GROUP BY poll.id;
 ----------------------------------------------------DELETE---------------------------------
 DELETE FROM poll WHERE id = 1;
 
------------------------------------------------------------- drop table ------------------------
+------------------------------------- drop table ------------------------
 DROP TABLE votes;
 DROP TABLE discussion;
 DROP TABLE alternative;

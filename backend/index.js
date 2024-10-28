@@ -102,7 +102,6 @@ app.get("/api/discussion/:id", async (_request, response) => {
 			"SELECT * FROM discussion where poll_id = $1",
 			[id]
 		);
-
 		response.send(rows);
 	} catch (error) {
 		response.status(500).send(error);
