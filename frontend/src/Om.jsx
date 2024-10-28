@@ -1,4 +1,4 @@
-export default function About() {
+export default function Om() {
 	return (
 		<div>
 			<h1>Om Projektet</h1>

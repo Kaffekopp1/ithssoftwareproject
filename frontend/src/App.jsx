@@ -1,5 +1,5 @@
 import Home from "./Home";
-import About from "./About";
+import Info from "./Info";
 import Polls from "./Polls";
 import Poll from "./Poll";
 import CreatePoll from "./CreatePoll";
@@ -15,7 +15,7 @@ function App() {
 		{
 			children: [
 				{ element: <Home />, path: "/" },
-				{ element: <About />, path: "/about" },
+				{ element: <Info />, path: "/info" },
 				{ element: <Poll />, path: "/poll/:pollId?" },
 				{ element: <Polls />, path: "/polls" },
 				{ element: <CreatePoll />, path: "/createpoll" }
@@ -28,7 +28,7 @@ function App() {
 								<Link to="/">Hem</Link>
 							</li>
 							<li>
-								<Link to="/about">Om projektet</Link>
+								<Link to="/info">Om projektet</Link>
 							</li>
 							<li>
 								<Link to="/polls">Polls</Link>
