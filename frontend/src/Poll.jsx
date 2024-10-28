@@ -116,10 +116,8 @@ export default function Poll() {
 	async function getDiskussion() {
 		try {
 			setDiscussionLoad(true);
-			console.log("pollId", pollId);
 			const response = await fetch(`/api/discussion/${pollId}`);
 			const data = await response.json();
-
 			setDiscussion(data);
 		} catch (error) {
 			console.log("error", error);
