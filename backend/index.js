@@ -67,7 +67,7 @@ app.get("/api/get/poll/:id", async (_request, response) => {
 			'alternative', alternative.alternative, 'votes', alternative.votes)
 			 ORDER BY alternative.id) AS alternatives
 			 FROM poll JOIN alternative ON poll.id = alternative.poll_id
-			 WHERE poll.id = $1 GROUP BY poll.id; `,
+			 WHERE poll.id = $1 GROUP BY poll.id`,
 			[id]
 		);
 		response.send(rows);
